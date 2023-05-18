@@ -178,8 +178,8 @@ char *_getenv(const char *name, char **_environ);
 int _env(data_shell *datash);
 
 /* envec2.c */
-char *copy_info(char *name, char *value);
-void set_env(char *name, char *value, data_shell *datash);
+char *copy_intro(char *name, char *index);
+void set_env(char *name, char *index, data_shell *datash);
 int _setenv(data_shell *datash);
 int _unsetenv(data_shell *datash);
 
