@@ -1014,7 +1014,296 @@
   <img id="lb-img" src="" alt="">
 </div>
 
-<!-- Section 5 will be added below -->
+<!-- ═══════════════════════════════════════
+     SECTION 5: BOOKING + FOOTER + JAVASCRIPT
+════════════════════════════════════════ -->
+<style>
+  /* BOOKING */
+  #booking {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--emerald) 100%);
+    text-align: center;
+  }
+  #booking .sec-label { color: var(--lgold); }
+  #booking .sec-title { color: #fff; margin-bottom: 14px; }
+  #booking .sec-sub   { color: rgba(255,255,255,.78); margin: 0 auto 46px; }
+  .book-form {
+    background: rgba(255,255,255,.08); backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,.14); border-radius: var(--rl);
+    padding: 46px; max-width: 780px; margin: 0 auto;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .fg { display: flex; flex-direction: column; text-align: left; }
+  .fg.full { grid-column: 1/3; }
+  .fg label {
+    color: rgba(255,255,255,.75); font-size: 11px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 7px;
+  }
+  .fg input, .fg select, .fg textarea {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px; padding: 13px 16px; color: #fff;
+    font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+    transition: border-color .3s;
+  }
+  .fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,.38); }
+  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--lgold); }
+  .fg select option { background: var(--forest); }
+  .fg textarea { height: 110px; resize: vertical; }
+  .btn-submit {
+    width: 100%; background: linear-gradient(135deg, var(--gold), var(--lgold));
+    color: var(--dark); padding: 17px; border-radius: 50px;
+    font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    border: none; cursor: pointer; transition: var(--t); margin-top: 8px;
+  }
+  .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(201,168,76,.45); }
+
+  /* FOOTER */
+  footer { background: var(--dark); color: #fff; padding: 76px 48px 36px; }
+  .foot-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 52px;
+    padding-bottom: 52px; border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .foot-brand .brand { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--lgold); letter-spacing: 2px; text-transform: uppercase; display: block; }
+  .foot-brand .sub   { font-family: 'Cormorant Garamond', serif; font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: 4px; text-transform: uppercase; display: block; margin-bottom: 18px; }
+  .foot-brand p { color: rgba(255,255,255,.58); font-size: 14px; line-height: 1.8; margin-bottom: 22px; }
+  .socials { display: flex; gap: 10px; }
+  .soc {
+    width: 38px; height: 38px; background: rgba(255,255,255,.07); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,.65); text-decoration: none; font-size: 15px; transition: var(--t);
+  }
+  .soc:hover { background: var(--gold); color: var(--dark); transform: translateY(-3px); }
+  .foot-col h4 { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--lgold); margin-bottom: 18px; font-family: 'Inter', sans-serif; }
+  .foot-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .foot-links a { color: rgba(255,255,255,.58); text-decoration: none; font-size: 13px; transition: color .3s; }
+  .foot-links a:hover { color: #fff; }
+  .foot-contact { display: flex; flex-direction: column; gap: 11px; }
+  .foot-ci { display: flex; align-items: flex-start; gap: 10px; color: rgba(255,255,255,.58); font-size: 13px; }
+  .foot-ci i { color: var(--gold); font-size: 13px; margin-top: 2px; width: 15px; }
+  .foot-bottom {
+    max-width: 1200px; margin: 28px auto 0;
+    display: flex; justify-content: space-between; align-items: center;
+    color: rgba(255,255,255,.35); font-size: 12px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--emerald); color: #fff;
+    padding: 14px 22px; border-radius: var(--r); box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    font-size: 14px; font-weight: 500; z-index: 9999;
+    display: flex; align-items: center; gap: 9px;
+    transform: translateX(150%); transition: transform .4s ease;
+  }
+  .toast.show { transform: translateX(0); }
+
+  /* BACK TO TOP */
+  .btt {
+    position: fixed; bottom: 28px; left: 28px;
+    width: 44px; height: 44px; background: var(--gold); color: var(--dark);
+    border-radius: 50%; border: none; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--sgold); transition: var(--t);
+    opacity: 0; pointer-events: none;
+  }
+  .btt.show { opacity: 1; pointer-events: auto; }
+  .btt:hover { background: var(--lgold); transform: translateY(-3px); }
+
+  @media(max-width:900px){ .foot-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:768px){
+    .form-grid { grid-template-columns: 1fr; }
+    .fg.full { grid-column: 1; }
+    .book-form { padding: 28px 18px; }
+    .foot-grid { grid-template-columns: 1fr; gap: 36px; }
+    .foot-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    footer { padding: 60px 20px 28px; }
+  }
+</style>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="container">
+    <span class="sec-label" style="display:block;margin-bottom:10px;">Plan Your Visit</span>
+    <h2 class="sec-title reveal">Begin Your <span style="color:var(--lgold);">Mambilla Journey</span></h2>
+    <p class="sec-sub reveal">Whether you're planning a family vacation, golf retreat, property investment, or luxury escape — we'll craft the perfect Mambilla experience for you.</p>
+    <div class="book-form reveal">
+      <div class="form-grid">
+        <div class="fg"><label>Full Name</label><input type="text" placeholder="Your full name"></div>
+        <div class="fg"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+234 000 000 0000"></div>
+        <div class="fg"><label>Experience Type</label>
+          <select>
+            <option value="">Select an experience</option>
+            <option>Vacation &amp; Tourism</option>
+            <option>Golf &amp; Country Club</option>
+            <option>Crystal Lake Marina</option>
+            <option>Ranch &amp; Safari</option>
+            <option>Casino &amp; Entertainment</option>
+            <option>Real Estate Enquiry</option>
+            <option>Adventure &amp; Trekking</option>
+            <option>Corporate Retreat</option>
+            <option>Wedding &amp; Events</option>
+          </select>
+        </div>
+        <div class="fg"><label>Arrival Date</label><input type="date"></div>
+        <div class="fg"><label>Departure Date</label><input type="date"></div>
+        <div class="fg"><label>Number of Guests</label><input type="number" placeholder="2" min="1"></div>
+        <div class="fg"><label>Budget Range</label>
+          <select>
+            <option value="">Select budget</option>
+            <option>₦500K – ₦1M</option>
+            <option>₦1M – ₦5M</option>
+            <option>₦5M – ₦20M</option>
+            <option>₦20M+</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Special Requests</label><textarea placeholder="Tell us about your dream Mambilla experience..."></textarea></div>
+      </div>
+      <button class="btn-submit" onclick="submitForm()">
+        <i class="fas fa-paper-plane" style="margin-right:8px;"></i>
+        Send Enquiry — Begin Your Journey
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="brand">The Mambilla</span>
+      <span class="sub">Tourism &amp; Estates</span>
+      <p>Transforming Nigeria's highest plateau into Africa's most extraordinary destination — where natural wonder meets world-class luxury, adventure and investment.</p>
+      <div class="socials">
+        <a href="#" class="soc"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="soc"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="soc"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="soc"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="soc"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Experiences</h4>
+      <ul class="foot-links">
+        <li><a href="#experiences">Golf &amp; Country Club</a></li>
+        <li><a href="#marina">Crystal Lake Marina</a></li>
+        <li><a href="#experiences">Plateau Ranch Safari</a></li>
+        <li><a href="#casino">Casino &amp; Resort</a></li>
+        <li><a href="#experiences">Adventure Center</a></li>
+        <li><a href="#attractions">Tea Estate Tours</a></li>
+        <li><a href="#attractions">Mountain Trekking</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Real Estate</h4>
+      <ul class="foot-links">
+        <li><a href="#realestate">Mountain Villas</a></li>
+        <li><a href="#realestate">Lakefront Estates</a></li>
+        <li><a href="#realestate">Ranch Properties</a></li>
+        <li><a href="#realestate">Golf Residences</a></li>
+        <li><a href="#realestate">Vacation Homes</a></li>
+        <li><a href="#realestate">Sky Penthouses</a></li>
+        <li><a href="#booking">Investment Enquiry</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <div class="foot-contact">
+        <div class="foot-ci"><i class="fas fa-map-marker-alt"></i><span>Gembu, Mambilla Plateau, Taraba State, Nigeria</span></div>
+        <div class="foot-ci"><i class="fas fa-phone"></i><span>+234 (0) 800 MAMBILLA</span></div>
+        <div class="foot-ci"><i class="fas fa-envelope"></i><span>hello@themambillatourism.com</span></div>
+        <div class="foot-ci"><i class="fas fa-clock"></i><span>Open 24 / 7 — Year Round</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 TheMambillaTourism. All rights reserved. Taraba State, Nigeria.</span>
+    <span>Designed with ♥ for Nigeria's Crown Jewel</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span>Thank you! Our team will contact you within 24 hours.</span></div>
+
+<!-- BACK TO TOP -->
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+  /* Nav scroll */
+  const navbar = document.getElementById('navbar');
+  const btt    = document.getElementById('btt');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 70);
+    btt.classList.toggle('show', window.scrollY > 400);
+  });
+
+  /* Mobile menu */
+  function toggleMenu(){
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+  );
+
+  /* Scroll reveal + counter */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      const num = e.target.querySelector('[data-count]');
+      if(num && !num.dataset.done){
+        num.dataset.done = '1';
+        animCount(num);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .stat-item').forEach(el => obs.observe(el));
+
+  function animCount(el){
+    const target = +el.dataset.count;
+    const dur = 2000, start = Date.now();
+    (function tick(){
+      const p = Math.min((Date.now()-start)/dur, 1);
+      const ease = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.floor(ease*target).toLocaleString();
+      if(p < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
+    })();
+  }
+
+  /* Lightbox */
+  function openLB(item){
+    document.getElementById('lb-img').src = item.querySelector('img').src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLB(){
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeLB(); });
+
+  /* Booking toast */
+  function submitForm(){
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 5000);
+  }
+
+  /* Smooth anchor scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+</script>
 
 </body>
 </html>
