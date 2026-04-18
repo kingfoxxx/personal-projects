@@ -280,7 +280,221 @@
   </div>
 </div>
 
-<!-- Sections 2-5 will be added below -->
+<!-- ═══════════════════════════════════════
+     SECTION 2: ABOUT + VISION + ATTRACTIONS
+════════════════════════════════════════ -->
+
+<style>
+  /* SHARED LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; }
+  section { padding: 90px 48px; }
+  .sec-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--jade);
+    letter-spacing: 4px; text-transform: uppercase;
+    display: block; margin-bottom: 12px;
+  }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px,4vw,50px); font-weight: 700; line-height: 1.2; margin-bottom: 18px;
+  }
+  .sec-sub { color: var(--gray); font-size: 17px; line-height: 1.75; max-width: 580px; }
+  .text-gold { color: var(--gold); }
+  .text-green { color: var(--emerald); }
+  .text-center { text-align: center; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--cream); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+  }
+  .about-features {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px;
+  }
+  .feat {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .feat-icon {
+    width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px;
+    background: linear-gradient(135deg, var(--emerald), var(--jade));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 17px;
+  }
+  .feat-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .feat-text p  { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .about-imgs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 250px 250px; gap: 14px;
+  }
+  .about-img { border-radius: var(--r); overflow: hidden; }
+  .about-img:first-child { grid-row: 1 / 3; }
+  .about-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .about-img:hover img { transform: scale(1.05); }
+
+  /* ── VISION BANNER ── */
+  .vision {
+    background: linear-gradient(135deg, var(--forest), var(--emerald));
+    padding: 72px 48px; text-align: center;
+  }
+  .vision-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px,3.5vw,38px); font-style: italic; line-height: 1.55;
+    color: rgba(255,255,255,.95); max-width: 860px; margin: 0 auto 20px;
+  }
+  .vision-quote span { color: var(--lgold); }
+  .vision-attr { color: rgba(255,255,255,.45); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
+
+  /* ── ATTRACTIONS ── */
+  #attractions { background: #fff; }
+  .attract-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; margin-top: 54px;
+  }
+  .attract-card {
+    position: relative; border-radius: var(--rl); overflow: hidden; height: 380px; cursor: pointer;
+  }
+  .attract-card img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease;
+  }
+  .attract-card:hover img { transform: scale(1.1); }
+  .attract-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.05) 60%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 26px;
+    transition: background .4s ease;
+  }
+  .attract-card:hover .attract-overlay {
+    background: linear-gradient(to top, rgba(27,67,50,.88) 0%, rgba(27,67,50,.35) 100%);
+  }
+  .attract-tag {
+    display: inline-block; background: var(--gold); color: var(--dark);
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 11px; border-radius: 50px; margin-bottom: 10px; width: fit-content;
+  }
+  .attract-card h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 22px; margin-bottom: 6px; }
+  .attract-card p {
+    color: rgba(255,255,255,.8); font-size: 13px; line-height: 1.5;
+    max-height: 0; overflow: hidden; transition: max-height .4s ease;
+  }
+  .attract-card:hover p { max-height: 80px; }
+
+  @media(max-width:900px){ .attract-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:768px){
+    section { padding: 60px 20px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-imgs { grid-template-rows: 200px 200px; }
+    .attract-grid { grid-template-columns: 1fr; }
+    .vision { padding: 60px 24px; }
+  }
+</style>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal left">
+        <span class="sec-label">About Mambilla</span>
+        <h2 class="sec-title">The Roof of Nigeria,<br><span class="text-gold">Reimagined</span></h2>
+        <p class="sec-sub">
+          Nestled in eastern Taraba State, the Mambilla Plateau is Nigeria's highest and most spectacular plateau —
+          stretching 96 km long and 40 km wide, flanked by dramatic 900-metre escarpments.
+          Year-round cool temperatures, Nigeria's only large-scale tea estates, cascading waterfalls and
+          pristine montane forests have earned it the name <em>"Switzerland of Nigeria."</em>
+        </p>
+        <p class="sec-sub" style="margin-top:14px;">
+          TheMambillaTourism is transforming this untapped paradise into Africa's premier luxury destination —
+          where natural wonder meets world-class golf, ranching, a crystal lake marina, and private estates.
+        </p>
+        <div class="about-features">
+          <div class="feat"><div class="feat-icon"><i class="fas fa-mountain"></i></div><div class="feat-text"><h4>Chappal Waddi</h4><p>Nigeria's highest peak — 2,419 m</p></div></div>
+          <div class="feat"><div class="feat-icon"><i class="fas fa-cloud-sun"></i></div><div class="feat-text"><h4>Cool Climate</h4><p>14–25 °C all year round</p></div></div>
+          <div class="feat"><div class="feat-icon"><i class="fas fa-leaf"></i></div><div class="feat-text"><h4>Tea Estates</h4><p>Nigeria's only large-scale tea farms</p></div></div>
+          <div class="feat"><div class="feat-icon"><i class="fas fa-paw"></i></div><div class="feat-text"><h4>Ngel Nyaki Forest</h4><p>Rare montane forest reserve</p></div></div>
+          <div class="feat"><div class="feat-icon"><i class="fas fa-water"></i></div><div class="feat-text"><h4>Waterfalls</h4><p>Gashaka, Serti, Leme & more</p></div></div>
+          <div class="feat"><div class="feat-icon"><i class="fas fa-cow"></i></div><div class="feat-text"><h4>Fulani Heritage</h4><p>Authentic highland cattle culture</p></div></div>
+        </div>
+      </div>
+      <div class="about-imgs reveal right">
+        <div class="about-img"><img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" alt="Mambilla Green Hills"></div>
+        <div class="about-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80" alt="Tea Plantation"></div>
+        <div class="about-img"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Mountain View"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION BANNER -->
+<div class="vision">
+  <p class="vision-quote reveal">
+    "Mambilla is not just a destination — it is a <span>living masterpiece</span>
+    where nature's finest canvas meets world-class luxury.
+    We are not changing Mambilla. We are <span>revealing its greatness</span> to the world."
+  </p>
+  <span class="vision-attr">— The Mambilla Tourism Vision</span>
+</div>
+
+<!-- NATURAL ATTRACTIONS -->
+<section id="attractions">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="sec-label">Natural Wonders</span>
+      <h2 class="sec-title">Mambilla's <span class="text-green">Timeless Attractions</span></h2>
+      <p class="sec-sub mx-auto">From mist-covered peaks to endless tea gardens — Mambilla's natural attractions are unmatched anywhere in West Africa.</p>
+    </div>
+    <div class="attract-grid">
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Chappal Waddi">
+        <div class="attract-overlay">
+          <span class="attract-tag">Mountain Trek</span>
+          <h3>Chappal Waddi</h3>
+          <p>Conquer Nigeria's highest mountain at 2,419 m with expert guided expeditions.</p>
+        </div>
+      </div>
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Tea Estate">
+        <div class="attract-overlay">
+          <span class="attract-tag">Agri-Tourism</span>
+          <h3>Tea Estates</h3>
+          <p>Walk Nigeria's only large-scale tea plantations with guided tours and tastings.</p>
+        </div>
+      </div>
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1467890158936-460b3ebf3ceb?auto=format&fit=crop&w=800&q=80" alt="Waterfall">
+        <div class="attract-overlay">
+          <span class="attract-tag">Nature</span>
+          <h3>Highland Waterfalls</h3>
+          <p>Discover Gashaka, Serti and Leme cascades hidden deep in the forest reserve.</p>
+        </div>
+      </div>
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="Hiking">
+        <div class="attract-overlay">
+          <span class="attract-tag">Adventure</span>
+          <h3>Plateau Trails</h3>
+          <p>Hundreds of km of curated hiking and cycling trails through breathtaking scenery.</p>
+        </div>
+      </div>
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=800&q=80" alt="Ranch">
+        <div class="attract-overlay">
+          <span class="attract-tag">Cultural</span>
+          <h3>Mambilla Cattle Trail</h3>
+          <p>Experience authentic Fulani ranching culture, horse riding and traditional life.</p>
+        </div>
+      </div>
+      <div class="attract-card reveal">
+        <img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=800&q=80" alt="Sunset">
+        <div class="attract-overlay">
+          <span class="attract-tag">Scenic</span>
+          <h3>Highland Sunsets</h3>
+          <p>Nigeria's most spectacular sunsets from premium plateau viewpoints and sky decks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sections 3-5 will be added below -->
 
 </body>
 </html>
