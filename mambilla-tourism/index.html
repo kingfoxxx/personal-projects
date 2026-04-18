@@ -494,7 +494,237 @@
   </div>
 </section>
 
-<!-- Sections 3-5 will be added below -->
+<!-- ═══════════════════════════════════════
+     SECTION 3: EXPERIENCES + MARINA + CASINO
+════════════════════════════════════════ -->
+
+<style>
+  /* EXPERIENCES */
+  #experiences { background: var(--gray100); }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; }
+  .exp-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 26px; }
+  .exp-card {
+    background: #fff; border-radius: var(--rl); overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07); transition: var(--t);
+  }
+  .exp-card:hover { transform: translateY(-7px); box-shadow: 0 20px 55px rgba(0,0,0,.14); }
+  .exp-card.featured { grid-column: 1 / 3; display: grid; grid-template-columns: 1fr 1fr; }
+  .exp-img { height: 270px; overflow: hidden; position: relative; }
+  .exp-card.featured .exp-img { height: 100%; }
+  .exp-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .exp-card:hover .exp-img img { transform: scale(1.07); }
+  .exp-badge {
+    position: absolute; top: 18px; left: 18px;
+    background: rgba(13,27,42,.82); backdrop-filter: blur(8px);
+    color: var(--lgold); font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 13px; border-radius: 50px;
+  }
+  .exp-body { padding: 28px; }
+  .exp-icon {
+    width: 48px; height: 48px; border-radius: 13px;
+    background: linear-gradient(135deg, var(--emerald), var(--jade));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px; margin-bottom: 14px;
+  }
+  .exp-body h3 { font-family: 'Playfair Display', serif; font-size: 21px; margin-bottom: 10px; }
+  .exp-body p  { color: var(--gray); font-size: 14px; line-height: 1.7; margin-bottom: 18px; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+  .exp-tag {
+    background: var(--gray100); color: var(--emerald);
+    font-size: 11px; font-weight: 500; padding: 4px 11px; border-radius: 50px;
+    border: 1px solid rgba(45,106,79,.18);
+  }
+  .exp-link {
+    color: var(--emerald); font-weight: 600; font-size: 13px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap .3s;
+  }
+  .exp-link:hover { gap: 12px; }
+
+  /* MARINA */
+  #marina { position: relative; min-height: 80vh; display: flex; align-items: center; overflow: hidden; padding: 0; }
+  .marina-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1439405326-b1bdba4a62eb?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+    background-attachment: fixed;
+  }
+  .marina-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(13,27,42,.92) 0%, rgba(13,27,42,.6) 55%, rgba(13,27,42,.15) 100%);
+  }
+  .marina-content {
+    position: relative; z-index: 2; max-width: 580px;
+    padding: 90px 48px; margin-left: max(48px, calc((100vw - 1200px)/2));
+  }
+  .marina-content .sec-label { color: var(--lgold); }
+  .marina-content .sec-title { color: #fff; }
+  .marina-content .sec-title span { color: var(--lgold); }
+  .marina-content > p { color: rgba(255,255,255,.8); font-size: 16px; line-height: 1.8; margin-bottom: 14px; }
+  .marina-acts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0;
+  }
+  .marina-act { display: flex; align-items: center; gap: 11px; color: rgba(255,255,255,.88); font-size: 14px; }
+  .marina-act i { color: var(--lgold); font-size: 17px; width: 20px; }
+
+  /* CASINO */
+  #casino { background: var(--navy); }
+  .casino-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .casino-img-wrap { position: relative; border-radius: var(--rl); overflow: hidden; }
+  .casino-img-wrap::before {
+    content: ''; position: absolute; inset: -2px; border-radius: var(--rl);
+    background: linear-gradient(135deg, var(--gold), transparent, var(--gold));
+    z-index: -1; opacity: .55;
+  }
+  .casino-img-wrap img { width: 100%; height: 480px; object-fit: cover; border-radius: var(--rl); display: block; }
+  .casino-content .sec-label { color: var(--lgold); }
+  .casino-content .sec-title { color: #fff; }
+  .casino-content .sec-title span { color: var(--gold); }
+  .casino-content > p { color: rgba(255,255,255,.7); font-size: 16px; line-height: 1.8; margin-bottom: 14px; }
+  .casino-ams { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin: 26px 0; }
+  .casino-am { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.8); font-size: 13px; }
+  .casino-am i { color: var(--gold); font-size: 15px; }
+
+  @media(max-width:900px){
+    .exp-card.featured { grid-column: 1; grid-template-columns: 1fr; }
+    .exp-card.featured .exp-img { height: 260px; }
+    .exp-grid { grid-template-columns: 1fr; }
+    .casino-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  @media(max-width:768px){
+    .exp-header { flex-direction: column; align-items: flex-start; gap: 18px; }
+    .marina-content { padding: 70px 24px; margin-left: 0; }
+    .marina-acts { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="container">
+    <div class="exp-header">
+      <div class="reveal left">
+        <span class="sec-label">Premium Experiences</span>
+        <h2 class="sec-title">World-Class <span class="text-green">Amenities</span></h2>
+      </div>
+      <a href="#booking" class="btn-primary reveal right">Reserve an Experience</a>
+    </div>
+    <div class="exp-grid">
+
+      <!-- Golf — Featured -->
+      <div class="exp-card featured reveal">
+        <div class="exp-img">
+          <img src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=900&q=80" alt="Golf Course">
+          <span class="exp-badge">Signature Experience</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-icon"><i class="fas fa-golf-ball-tee"></i></div>
+          <h3>Mambilla Royal Golf &amp; Country Club</h3>
+          <p>Africa's most scenic 18-hole championship course, 1,800 m above sea level. Designed by world-renowned architects, the fairways wind through rolling green hills with panoramic mountain vistas at every turn — a golf experience unlike any other on the continent.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">18-Hole Championship</span>
+            <span class="exp-tag">Pro Shop</span>
+            <span class="exp-tag">Golf Academy</span>
+            <span class="exp-tag">Clubhouse Restaurant</span>
+            <span class="exp-tag">Tournament Events</span>
+          </div>
+          <a href="#booking" class="exp-link">Book a Tee Time <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Ranch -->
+      <div class="exp-card reveal">
+        <div class="exp-img">
+          <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=800&q=80" alt="Ranch">
+          <span class="exp-badge">Ranch &amp; Safari</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-icon"><i class="fas fa-horse"></i></div>
+          <h3>Plateau Highland Ranch</h3>
+          <p>A 5,000-acre working ranch where guests ride horses through open valleys, interact with Mambilla's famous cattle, and explore wild highland terrain on guided safari drives.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">Horse Riding</span>
+            <span class="exp-tag">Safari Drives</span>
+            <span class="exp-tag">Farm Tours</span>
+            <span class="exp-tag">Bush Camping</span>
+          </div>
+          <a href="#booking" class="exp-link">Explore Ranch <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- Adventure -->
+      <div class="exp-card reveal">
+        <div class="exp-img">
+          <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="Adventure">
+          <span class="exp-badge">Adventure Sports</span>
+        </div>
+        <div class="exp-body">
+          <div class="exp-icon"><i class="fas fa-person-hiking"></i></div>
+          <h3>Mambilla Adventure Center</h3>
+          <p>Paraglide over mountain ridges, zip-line through forest canopies, and rock-climb dramatic escarpments — heart-pounding thrills in an extraordinary natural setting.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">Paragliding</span>
+            <span class="exp-tag">Zip Line</span>
+            <span class="exp-tag">Rock Climbing</span>
+            <span class="exp-tag">Mountain Biking</span>
+          </div>
+          <a href="#booking" class="exp-link">Get Adventurous <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CRYSTAL LAKE MARINA -->
+<div id="marina">
+  <div class="marina-bg"></div>
+  <div class="marina-overlay"></div>
+  <div class="marina-content reveal left">
+    <span class="sec-label">Crystal Lake Marina</span>
+    <h2 class="sec-title">Mambilla <span>Crystal Lake</span></h2>
+    <p>We are engineering a spectacular 200-hectare artificial lake in the heart of the plateau — creating West Africa's highest-altitude water destination. Fed by natural highland streams, the Mambilla Crystal Lake will maintain pristine, crystal-clear water year-round.</p>
+    <p>Surrounded by luxury lakefront lodges and dining pavilions, it will transform Mambilla into a complete, all-season destination unlike anything else in Nigeria.</p>
+    <div class="marina-acts">
+      <div class="marina-act"><i class="fas fa-sailboat"></i> Luxury Boat Cruises</div>
+      <div class="marina-act"><i class="fas fa-eye"></i> Sunset Sightseeing</div>
+      <div class="marina-act"><i class="fas fa-person-swimming"></i> Highland Swimming</div>
+      <div class="marina-act"><i class="fas fa-ship"></i> Cruise Dining</div>
+      <div class="marina-act"><i class="fas fa-fish"></i> Sport Fishing</div>
+      <div class="marina-act"><i class="fas fa-water"></i> Kayaking &amp; Canoeing</div>
+      <div class="marina-act"><i class="fas fa-jet-fighter-up"></i> Jet Skiing</div>
+      <div class="marina-act"><i class="fas fa-umbrella-beach"></i> Lakeside Spa</div>
+    </div>
+    <a href="#booking" class="btn-primary">Reserve Lake Experience</a>
+  </div>
+</div>
+
+<!-- CASINO & ENTERTAINMENT -->
+<section id="casino">
+  <div class="container">
+    <div class="casino-grid">
+      <div class="casino-img-wrap reveal left">
+        <img src="https://images.unsplash.com/photo-1596838132731-75c2e4f45e2c?auto=format&fit=crop&w=800&q=80" alt="Casino">
+      </div>
+      <div class="casino-content reveal right">
+        <span class="sec-label">Entertainment Hub</span>
+        <h2 class="sec-title">The Plateau <span>Casino &amp; Resort</span></h2>
+        <p>Where highland elegance meets world-class entertainment. The Plateau Casino &amp; Resort will be Nigeria's most sophisticated gaming complex — nestled among misty mountains at 1,800 m, creating an unparalleled atmosphere of luxury and excitement.</p>
+        <p>A 24-hour destination with Vegas-style gaming, live entertainment, fine dining, exclusive lounges, and a world-class spa — all set against the spectacular Mambilla highlands.</p>
+        <div class="casino-ams">
+          <div class="casino-am"><i class="fas fa-dice"></i> Premium Gaming Floors</div>
+          <div class="casino-am"><i class="fas fa-music"></i> Live Entertainment Stage</div>
+          <div class="casino-am"><i class="fas fa-martini-glass"></i> Skyline Lounge &amp; Bar</div>
+          <div class="casino-am"><i class="fas fa-utensils"></i> Fine Dining Restaurants</div>
+          <div class="casino-am"><i class="fas fa-spa"></i> Luxury Spa &amp; Wellness</div>
+          <div class="casino-am"><i class="fas fa-film"></i> Private Cinema</div>
+          <div class="casino-am"><i class="fas fa-bowling-ball"></i> Entertainment Center</div>
+          <div class="casino-am"><i class="fas fa-crown"></i> VIP Private Suites</div>
+        </div>
+        <a href="#booking" class="btn-primary">Reserve VIP Access</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sections 4-5 will be added below -->
 
 </body>
 </html>
