@@ -724,7 +724,297 @@
   </div>
 </section>
 
-<!-- Sections 4-5 will be added below -->
+<!-- ═══════════════════════════════════════
+     SECTION 4: REAL ESTATE + GALLERY + TESTIMONIALS
+════════════════════════════════════════ -->
+<style>
+  /* REAL ESTATE */
+  #realestate { background: var(--cream); }
+  .props-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; margin-top: 52px; }
+  .prop-card {
+    background: #fff; border-radius: var(--rl); overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07); transition: var(--t);
+  }
+  .prop-card:hover { transform: translateY(-6px); box-shadow: 0 18px 50px rgba(0,0,0,.13); }
+  .prop-img { height: 230px; overflow: hidden; position: relative; }
+  .prop-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .prop-card:hover .prop-img img { transform: scale(1.07); }
+  .prop-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--gold); color: var(--dark);
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 11px; border-radius: 50px;
+  }
+  .prop-body { padding: 22px; }
+  .prop-type { color: var(--jade); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .prop-body h3 { font-family: 'Playfair Display', serif; font-size: 19px; margin-bottom: 8px; }
+  .prop-body p  { color: var(--gray); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .prop-specs { display: flex; gap: 14px; padding-top: 14px; border-top: 1px solid var(--gray200); margin-bottom: 14px; }
+  .prop-spec { display: flex; align-items: center; gap: 5px; color: var(--gray); font-size: 12px; }
+  .prop-spec i { color: var(--jade); font-size: 13px; }
+  .prop-price { display: flex; justify-content: space-between; align-items: center; }
+  .price-num { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--forest); }
+  .price-lbl { font-size: 11px; color: var(--gray); }
+  .btn-sm {
+    background: var(--emerald); color: #fff; padding: 9px 18px; border-radius: 50px;
+    font-size: 12px; font-weight: 600; border: none; cursor: pointer;
+    text-decoration: none; transition: var(--t); display: inline-block;
+  }
+  .btn-sm:hover { background: var(--forest); transform: translateY(-2px); }
+
+  /* GALLERY */
+  #gallery { background: #fff; }
+  .gal-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: 210px 210px;
+    gap: 10px; margin-top: 48px;
+  }
+  .gal-item { border-radius: var(--r); overflow: hidden; position: relative; cursor: pointer; }
+  .gal-item:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
+  .gal-item:nth-child(6) { grid-column: 4; grid-row: 1/3; }
+  .gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .gal-item:hover img { transform: scale(1.09); }
+  .gal-over {
+    position: absolute; inset: 0; background: rgba(27,67,50,.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .3s;
+  }
+  .gal-item:hover .gal-over { opacity: 1; }
+  .gal-over i { color: #fff; font-size: 26px; }
+
+  /* TESTIMONIALS */
+  #testimonials { background: var(--gray100); }
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; margin-top: 52px; }
+  .testi-card { background: #fff; border-radius: var(--rl); padding: 34px; }
+  .quote-mark { font-family: 'Playfair Display', serif; font-size: 72px; color: var(--mint); line-height: .5; display: block; margin-bottom: 18px; }
+  .testi-text { color: var(--dark); font-size: 15px; line-height: 1.75; font-style: italic; margin-bottom: 22px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+  .testi-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .testi-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .testi-info span { color: var(--gray); font-size: 12px; }
+  .stars { color: var(--gold); font-size: 12px; margin-top: 3px; }
+
+  /* LIGHTBOX */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.94); z-index: 9999; align-items: center; justify-content: center; }
+  .lightbox.active { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: var(--r); }
+  .lb-close { position: absolute; top: 18px; right: 26px; color: #fff; font-size: 28px; cursor: pointer; background: none; border: none; line-height: 1; }
+
+  @media(max-width:900px){
+    .props-grid { grid-template-columns: repeat(2,1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+  }
+  @media(max-width:768px){
+    .props-grid { grid-template-columns: 1fr; }
+    .gal-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gal-item:nth-child(1), .gal-item:nth-child(6) { grid-column: auto; grid-row: auto; }
+  }
+</style>
+
+<!-- REAL ESTATE -->
+<section id="realestate">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="sec-label">Premium Investment</span>
+      <h2 class="sec-title">Mambilla <span class="text-gold">Real Estate</span></h2>
+      <p class="sec-sub mx-auto">Own a piece of Nigeria's highest and most beautiful destination. From luxury mountain villas to lakefront estates — unmatched property investment on Africa's most exciting new development.</p>
+    </div>
+    <div class="props-grid">
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80" alt="Mountain Villa">
+          <span class="prop-badge">For Sale</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Mountain Villa</span>
+          <h3>Plateau Ridge Estate</h3>
+          <p>Luxurious 5-bed mountain villa with panoramic highland views, private pool, and direct golf course access.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 5 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 4 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 850 m²</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦450M</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="Lakefront">
+          <span class="prop-badge">Pre-Launch</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Lakefront Estate</span>
+          <h3>Crystal Lake Manor</h3>
+          <p>Exclusive lakefront property with private dock, boat garage, and uninterrupted views of Mambilla Crystal Lake.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 6 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 5 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 1,200 m²</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦680M</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" alt="Ranch House">
+          <span class="prop-badge">Available</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Ranch Estate</span>
+          <h3>Highland Ranch House</h3>
+          <p>50-acre working ranch estate with cattle pastures, stables, and a spectacular mountain backdrop.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 4 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 3 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 50 Acres</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦290M</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80" alt="Vacation Villa">
+          <span class="prop-badge" style="background:var(--emerald);color:#fff;">Rental</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Vacation Home</span>
+          <h3>Mambilla Getaway Villa</h3>
+          <p>Charming 3-bed highland holiday villa — perfect for family retreats and weekend escapes.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 3 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 2 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 380 m²</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦85M</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" alt="Penthouse">
+          <span class="prop-badge">Luxury</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Sky Penthouse</span>
+          <h3>Plateau Summit Tower</h3>
+          <p>Nigeria's first high-altitude luxury penthouse with 360° mountain views, infinity pool, and helipad.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 4 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 4 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 620 m²</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦1.2B</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop-card reveal">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800&q=80" alt="Golf Residence">
+          <span class="prop-badge">Golf View</span>
+        </div>
+        <div class="prop-body">
+          <span class="prop-type">Golf Residence</span>
+          <h3>Fairway Park Residence</h3>
+          <p>Premium golf-fronting home overlooking the 18th hole of Mambilla Royal Golf Course.</p>
+          <div class="prop-specs">
+            <span class="prop-spec"><i class="fas fa-bed"></i> 4 Beds</span>
+            <span class="prop-spec"><i class="fas fa-bath"></i> 3 Baths</span>
+            <span class="prop-spec"><i class="fas fa-expand"></i> 520 m²</span>
+          </div>
+          <div class="prop-price">
+            <div><div class="price-num">₦320M</div><div class="price-lbl">Starting Price</div></div>
+            <a href="#booking" class="btn-sm">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="sec-label">Visual Journey</span>
+      <h2 class="sec-title">Mambilla Through <span class="text-green">the Lens</span></h2>
+      <p class="sec-sub mx-auto">A glimpse of the paradise that awaits — breathtaking landscapes, world-class amenities and once-in-a-lifetime experiences.</p>
+    </div>
+    <div class="gal-grid">
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80" alt="Highlands"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=800&q=80" alt="Golf"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1439405326-b1bdba4a62eb?auto=format&fit=crop&w=800&q=80" alt="Lake"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Tea Garden"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80" alt="Boats"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80" alt="Villa"><div class="gal-over"><i class="fas fa-expand"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="sec-label">Guest Stories</span>
+      <h2 class="sec-title">Words from Our <span class="text-green">Explorers</span></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">Mambilla is absolutely otherworldly. Standing on the plateau at dawn, watching the mist roll over the mountains — I felt like I was on top of the world. This is Africa's best-kept secret.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Emeka"></div>
+          <div class="testi-info"><h4>Emeka Okafor</h4><span>Lagos, Nigeria</span><div class="stars">★★★★★</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">The golf course at 1,800 m is a golfer's dream. The views, the cool breeze, the perfectly manicured fairways — I've played in Scotland, but Mambilla is something else entirely.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="David"></div>
+          <div class="testi-info"><h4>David Mensah</h4><span>Accra, Ghana</span><div class="stars">★★★★★</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testi-text">We brought the whole family. The children couldn't stop talking about the ranch — horse riding, the wide open spaces. Weather was perfect every single day. We're buying property here.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" alt="Fatima"></div>
+          <div class="testi-info"><h4>Fatima Al-Hassan</h4><span>Abuja, Nigeria</span><div class="stars">★★★★★</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLB()">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- Section 5 will be added below -->
 
 </body>
 </html>
